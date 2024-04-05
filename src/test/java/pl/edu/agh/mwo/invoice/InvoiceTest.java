@@ -1,6 +1,7 @@
 package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -15,10 +16,12 @@ import pl.edu.agh.mwo.invoice.product.TaxFreeProduct;
 
 public class InvoiceTest {
     private Invoice invoice;
+    private Invoice invoice1;
 
     @Before
     public void createEmptyInvoiceForTheTest() {
         invoice = new Invoice();
+        invoice1 = new Invoice();
     }
 
     @Test
@@ -124,5 +127,25 @@ public class InvoiceTest {
     @Test(expected = IllegalArgumentException.class)
     public void testAddingNullProduct() {
         invoice.addProduct(null);
+    }
+
+    @Test
+    public void testInvoiceNumberDifferentThanZero(){
+        Assert.assertNotEquals(0, invoice.getInvoiceNumber());
+    }
+
+    @Test
+    public void testInvoiceNumberGreaterThanZero(){
+        Assert.assertTrue(invoice.getInvoiceNumber() > 0);
+    }
+
+    @Test
+    public void testSecondInvoiceNumberGreaterThanFirstInvoiceNumber(){
+        Assert.assertTrue(invoice1.getInvoiceNumber() > invoice.getInvoiceNumber());
+    }
+
+    @Test
+    public  void testInvoiceCreationDate(){
+        Assert.assertEquals(LocalDate.now(), invoice.getCreationDate());
     }
 }
