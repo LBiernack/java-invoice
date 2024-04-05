@@ -54,4 +54,20 @@ public class ProductTest {
     public void testProductWithNegativePrice() {
         new TaxFreeProduct("Mandarynki", new BigDecimal("-1.00"));
     }
+
+    @Test
+    public void testPrintingInformationWithTaxFreeProduct(){
+        Product product = new TaxFreeProduct("Owoce", new BigDecimal("200"));
+        String textInformation = "Nazwa: Owoce, Cena jedn. netto [PLN]: 200, Stawka VAT: 0%, Cena jedn. brutto [PLN]: 200";
+        Assert.assertEquals(textInformation, product.toString());
+    }
+
+    @Test
+    public void testPrintingInformationWithDairyProduct(){
+        Product product = new DairyProduct("Szarlotka", new BigDecimal("100"));
+        String textInformation = "Nazwa: Szarlotka, Cena jedn. netto [PLN]: 100, Stawka VAT: 8.00%, Cena jedn. brutto [PLN]: 108.00";
+        Assert.assertEquals(textInformation, product.toString());
+    }
+
 }
+
