@@ -39,6 +39,7 @@ public abstract class Product {
     @Override
     public String toString() {
         return "Nazwa: " + name + ", Cena jedn. netto [PLN]: " + price + ", Stawka VAT: "
-                + taxPercent.multiply(new BigDecimal("100")) + "%" + ", Cena jedn. brutto [PLN]: " + getPriceWithTax();
+                + taxPercent.multiply(new BigDecimal("100")) + "%" + ", Cena jedn. brutto [PLN]: "
+                + getPriceWithTax();
     }
 }
