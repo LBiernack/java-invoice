@@ -29,8 +29,15 @@ public class Invoice {
     public void addProduct(Product product, Integer quantity) {
         if (product == null || quantity <= 0) {
             throw new IllegalArgumentException();
+        } else {
+            for (Product existingProduct : products.keySet()) {
+                if (compareProductObject(existingProduct, product)) {
+                    products.put(existingProduct, products.get(existingProduct) + quantity);
+                    return;
+                }
+            }
+            products.put(product, quantity);
         }
-        products.put(product, quantity);
     }
 
     public BigDecimal getNetTotal() {
@@ -63,6 +70,10 @@ public class Invoice {
         return creationDate;
     }
 
+    public Map<Product, Integer> getProducts() {
+        return products;
+    }
+
     public void printInvoice() {
         System.out.print("Faktura nr: " + invoiceNumber + ", data wystawienia: "
                 + this.creationDate + "\n");
@@ -76,5 +87,22 @@ public class Invoice {
         System.out.print("Razem: Wartość Netto [PLN]: " + this.getNetTotal()
                 + ", Wartość VAT + Akcyza [PLN]: " + this.getTaxTotal()
                 + ", Wartość Brutto [PLN]: " + this.getGrossTotal());
+    }
+
+    public boolean compareProductObject(Product product1, Product product2) {
+        String productName1 = product1.getName();
+        BigDecimal productPrice1 = product1.getPrice();
+        BigDecimal productTax1 = product1.getTaxPercent();
+
+        String productName2 = product2.getName();
+        BigDecimal productPrice2 = product2.getPrice();
+        BigDecimal productTax2 = product2.getTaxPercent();
+
+        Boolean condition1 = productName1.equals(productName2);
+        Boolean condition2 = productPrice1.equals(productPrice2);
+        Boolean condition3 = productTax1.equals(productTax2);
+        Boolean condition4 = product1.getClass().equals(product2.getClass());
+
+        return condition1 && condition2 && condition3 && condition4;
     }
 }
