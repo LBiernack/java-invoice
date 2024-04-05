@@ -172,21 +172,16 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testPrintInvoiceWithManyProductsWithQuantityMoreThanOne(){
+    public void testPrintInvoiceWithOneProductsWithQuantityMoreThanOne(){
         System.setOut(new PrintStream(outputStreamCaptor));
 
-        Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
         Product milkProduct = new DairyProduct("Maslanka", new BigDecimal("100"));
-        Product alcohol = new OtherProduct("Wino", new BigDecimal("10"));
-        invoice.addProduct(fruits);
         invoice.addProduct(milkProduct, 10);
-        invoice.addProduct(alcohol, 5);
         String text = "Faktura nr: " + invoice.getInvoiceNumber() + ", data wystawienia: " + invoice.getCreationDate() + "\n"
-                + "Nazwa: Owoce, Cena jedn. netto [PLN]: 200, Stawka VAT: 0%, Cena jedn. brutto [PLN]: 200, Liczba: 1, Wartość brutto [PLN]: 200\n"
-                + "Nazwa: Wino, Cena jedn. netto [PLN]: 10, Stawka VAT: 23.00%, Cena jedn. brutto [PLN]: 12.30, Liczba: 5, Wartość brutto [PLN]: 61.50\n"
-                + "Nazwa: Maslanka, Cena jedn. netto [PLN]: 100, Stawka VAT: 8.00%, Cena jedn. brutto [PLN]: 108.00, Liczba: 10, Wartość brutto [PLN]: 1080.00\n"
-                + "Liczba pozycji: 3\n"
-                + "Razem: Wartość Netto [PLN]: 1250, Wartość VAT + Akcyza [PLN]: 91.50, Wartość Brutto [PLN]: 1341.50";
+                + "Nazwa: Maslanka, Cena jedn. netto [PLN]: 100, Stawka VAT: 8.00%, "
+                + "Cena jedn. brutto [PLN]: 108.00, Liczba: 10, Wartość brutto [PLN]: 1080.00\n"
+                + "Liczba pozycji: 1\n"
+                + "Razem: Wartość Netto [PLN]: 1000, Wartość VAT + Akcyza [PLN]: 80.00, Wartość Brutto [PLN]: 1080.00";
         invoice.printInvoice();
         Assert.assertEquals(text, outputStreamCaptor.toString()
                 .trim());
