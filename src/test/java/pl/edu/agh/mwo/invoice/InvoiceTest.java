@@ -1,5 +1,7 @@
 package pl.edu.agh.mwo.invoice;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -17,6 +19,8 @@ import pl.edu.agh.mwo.invoice.product.TaxFreeProduct;
 public class InvoiceTest {
     private Invoice invoice;
     private Invoice invoice1;
+    private final PrintStream standardOut = System.out;
+    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
     @Before
     public void createEmptyInvoiceForTheTest() {
@@ -147,5 +151,23 @@ public class InvoiceTest {
     @Test
     public  void testInvoiceCreationDate(){
         Assert.assertEquals(LocalDate.now(), invoice.getCreationDate());
+    }
+
+    @Test
+    public void testPrintInvoiceWithOneProducts(){
+        System.setOut(new PrintStream(outputStreamCaptor));
+
+        Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
+        invoice.addProduct(fruits);
+        String text = "Faktura nr: " + invoice.getInvoiceNumber() + ", data wystawienia: " + invoice.getCreationDate() + "\n"
+                + "Nazwa: Owoce, Cena jedn. netto [PLN]: 200, Stawka VAT: 0%, "
+                + "Cena jedn. brutto [PLN]: 200, Liczba: 1, Wartość brutto [PLN]: 200\n"
+                + "Liczba pozycji: 1\n"
+                + "Razem: Wartość Netto [PLN]: 200, Wartość VAT + Akcyza [PLN]: 0, Wartość Brutto [PLN]: 200";
+        invoice.printInvoice();
+        Assert.assertEquals(text, outputStreamCaptor.toString()
+                .trim());
+
+        System.setOut(standardOut);
     }
 }

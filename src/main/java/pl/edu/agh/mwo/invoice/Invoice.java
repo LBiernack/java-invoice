@@ -62,4 +62,19 @@ public class Invoice {
     public LocalDate getCreationDate() {
         return creationDate;
     }
+
+    public void printInvoice() {
+        System.out.print("Faktura nr: " + invoiceNumber + ", data wystawienia: "
+                + this.creationDate + "\n");
+        for (Product product : products.keySet()) {
+            System.out.print(product + ", Liczba: " + products.get(product)
+                    + ", Wartość brutto [PLN]: "
+                    + product.getPriceWithTax().multiply(new BigDecimal(products.get(product)))
+                    + "\n");
+        }
+        System.out.print("Liczba pozycji: " + products.size() + "\n");
+        System.out.print("Razem: Wartość Netto [PLN]: " + this.getNetTotal()
+                + ", Wartość VAT + Akcyza [PLN]: " + this.getTaxTotal()
+                + ", Wartość Brutto [PLN]: " + this.getGrossTotal());
+    }
 }
