@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import pl.edu.agh.mwo.invoice.product.Product;
 
@@ -78,9 +79,16 @@ public class Invoice {
     }
 
     public void printInvoice() {
+        TreeMap<String, Product> productsSorted = new TreeMap<>();
+
+        for (Product product : products.keySet()) {
+            productsSorted.put(product.getName(), product);
+        }
+
         System.out.print("Faktura nr: " + invoiceNumber + ", data wystawienia: "
                 + this.creationDate + "\n");
-        for (Product product : products.keySet()) {
+        for (String productName : productsSorted.keySet()) {
+            Product product = productsSorted.get(productName);
             System.out.print(product + ", Liczba: " + products.get(product)
                     + ", Wartość brutto [PLN]: "
                     + product.getPriceWithTax().multiply(new BigDecimal(products.get(product)))
