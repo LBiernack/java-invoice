@@ -2,7 +2,6 @@ package pl.edu.agh.mwo.invoice.product;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.hamcrest.Matchers;
@@ -11,7 +10,6 @@ import org.junit.Test;
 
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import pl.edu.agh.mwo.invoice.product.Product;
 
 public class ProductTest {
     @Test

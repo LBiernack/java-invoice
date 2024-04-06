@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import pl.edu.agh.mwo.invoice.Invoice;
 import pl.edu.agh.mwo.invoice.product.*;
 
 public class InvoiceTest {
@@ -484,5 +483,91 @@ public class InvoiceTest {
             invoice2.addProduct(new FuelCanister("Benzyna", new BigDecimal("6")), 15);
             Assert.assertThat(new BigDecimal("344"), Matchers.comparesEqualTo(invoice2.getGrossTotal()));
         }
+    }
+
+    @Test
+    public void testPrintInvoiceWithManyProductsExciseTaxNoDiscount() {
+        System.setOut(new PrintStream(outputStreamCaptor));
+        LocalDate noDiscountDay = LocalDate.of(2024, 03, 16);
+        try (MockedStatic<LocalDate> mockedStatic = Mockito.mockStatic(LocalDate.class)) {
+            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);
+            Invoice invoice2 = new Invoice();
+            Product cup = new TaxFreeProduct("Kubek", new BigDecimal("5"));
+            Product goatCheese = new DairyProduct("Kozi Serek", new BigDecimal("10"));
+            Product drawingPin = new OtherProduct("Pinezka", new BigDecimal("0.01"));
+            Product alcohol = new BottleOfWine("Wino", new BigDecimal("10"));
+            Product gasoline = new FuelCanister("Benzyna", new BigDecimal("6"));
+            // 2x kubek - price: 10
+            invoice2.addProduct(cup);
+            invoice2.addProduct(cup);
+            // 3x kozi serek - price: 30
+            invoice2.addProduct(goatCheese, 2);
+            invoice2.addProduct(goatCheese);
+            // 1000x pinezka - price: 10
+            invoice2.addProduct(drawingPin, 800);
+            invoice2.addProduct(drawingPin, 100);
+            invoice2.addProduct(drawingPin, 100);
+            // 10x wino - price: 10
+            invoice2.addProduct(alcohol, 10);
+            // 15x benzyna - price: 6
+            invoice2.addProduct(gasoline, 13);
+            invoice2.addProduct(gasoline, 2);
+            String text = "Faktura nr: " + invoice2.getInvoiceNumber() + ", data wystawienia: " + "2024-03-16\n"
+                    + "Nazwa: Benzyna, Cena jedn. netto [PLN]: 6, Stawka VAT: 23.00%, Akcyza [PLN]: 5.56, Cena jedn. brutto [PLN]: 12.94, Liczba: 15, Wartość brutto [PLN]: 194.10\n"
+                    + "Nazwa: Kozi Serek, Cena jedn. netto [PLN]: 10, Stawka VAT: 8.00%, Cena jedn. brutto [PLN]: 10.80, Liczba: 3, Wartość brutto [PLN]: 32.40\n"
+                    + "Nazwa: Kubek, Cena jedn. netto [PLN]: 5, Stawka VAT: 0%, Cena jedn. brutto [PLN]: 5, Liczba: 2, Wartość brutto [PLN]: 10\n"
+                    + "Nazwa: Pinezka, Cena jedn. netto [PLN]: 0.01, Stawka VAT: 23.00%, Cena jedn. brutto [PLN]: 0.0123, Liczba: 1000, Wartość brutto [PLN]: 12.3000\n"
+                    + "Nazwa: Wino, Cena jedn. netto [PLN]: 10, Stawka VAT: 23.00%, Akcyza [PLN]: 5.56, Cena jedn. brutto [PLN]: 17.86, Liczba: 10, Wartość brutto [PLN]: 178.60\n"
+                    + "Liczba pozycji: 5\n"
+                    + "Razem: Wartość Netto [PLN]: 240.00, Wartość VAT + Akcyza [PLN]: 187.4000, Wartość Brutto [PLN]: 427.4000";
+
+            invoice2.printInvoice();
+            Assert.assertEquals(text, outputStreamCaptor.toString()
+                    .trim());
+        }
+        System.setOut(standardOut);
+    }
+
+    @Test
+    public void testPrintInvoiceWithManyProductsExciseTaxDiscount() {
+        System.setOut(new PrintStream(outputStreamCaptor));
+        LocalDate noDiscountDay = LocalDate.of(2024, 03, 05);
+        try (MockedStatic<LocalDate> mockedStatic = Mockito.mockStatic(LocalDate.class)) {
+            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);
+            Invoice invoice2 = new Invoice();
+            Product cup = new TaxFreeProduct("Kubek", new BigDecimal("5"));
+            Product goatCheese = new DairyProduct("Kozi Serek", new BigDecimal("10"));
+            Product drawingPin = new OtherProduct("Pinezka", new BigDecimal("0.01"));
+            Product alcohol = new BottleOfWine("Wino", new BigDecimal("10"));
+            Product gasoline = new FuelCanister("Benzyna", new BigDecimal("6"));
+            // 2x kubek - price: 10
+            invoice2.addProduct(cup);
+            invoice2.addProduct(cup);
+            // 3x kozi serek - price: 30
+            invoice2.addProduct(goatCheese, 2);
+            invoice2.addProduct(goatCheese);
+            // 1000x pinezka - price: 10
+            invoice2.addProduct(drawingPin, 800);
+            invoice2.addProduct(drawingPin, 100);
+            invoice2.addProduct(drawingPin, 100);
+            // 10x wino - price: 10
+            invoice2.addProduct(alcohol, 10);
+            // 15x benzyna - price: 6
+            invoice2.addProduct(gasoline, 13);
+            invoice2.addProduct(gasoline, 2);
+            String text = "Faktura nr: " + invoice2.getInvoiceNumber() + ", data wystawienia: " + "2024-03-05\n"
+                    + "Nazwa: Benzyna, Cena jedn. netto [PLN]: 6, Stawka VAT: 23.00%, Akcyza [PLN]: 0.00, Cena jedn. brutto [PLN]: 7.38, Liczba: 15, Wartość brutto [PLN]: 110.70\n"
+                    + "Nazwa: Kozi Serek, Cena jedn. netto [PLN]: 10, Stawka VAT: 8.00%, Cena jedn. brutto [PLN]: 10.80, Liczba: 3, Wartość brutto [PLN]: 32.40\n"
+                    + "Nazwa: Kubek, Cena jedn. netto [PLN]: 5, Stawka VAT: 0%, Cena jedn. brutto [PLN]: 5, Liczba: 2, Wartość brutto [PLN]: 10\n"
+                    + "Nazwa: Pinezka, Cena jedn. netto [PLN]: 0.01, Stawka VAT: 23.00%, Cena jedn. brutto [PLN]: 0.0123, Liczba: 1000, Wartość brutto [PLN]: 12.3000\n"
+                    + "Nazwa: Wino, Cena jedn. netto [PLN]: 10, Stawka VAT: 23.00%, Akcyza [PLN]: 5.56, Cena jedn. brutto [PLN]: 17.86, Liczba: 10, Wartość brutto [PLN]: 178.60\n"
+                    + "Liczba pozycji: 5\n"
+                    + "Razem: Wartość Netto [PLN]: 240.00, Wartość VAT + Akcyza [PLN]: 104.0000, Wartość Brutto [PLN]: 344.0000";
+
+            invoice2.printInvoice();
+            Assert.assertEquals(text, outputStreamCaptor.toString()
+                    .trim());
+        }
+        System.setOut(standardOut);
     }
 }
