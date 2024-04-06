@@ -2,10 +2,13 @@ package pl.edu.agh.mwo.invoice.product;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Product {
+    public static final int discountMonth1 = 3;
+
+    public static final int discountDay1 = 5;
+
     private final String name;
 
     private final BigDecimal price;
@@ -13,6 +16,11 @@ public abstract class Product {
     private final BigDecimal taxPercent;
 
     protected final BigDecimal exciseTaxValue = new BigDecimal("5.56");
+
+    // discountDate [month, day]
+    Map<Integer, Integer> discountDate = Map.of(
+            discountMonth1, discountDay1
+    );
 
     protected Product(String name, BigDecimal price, BigDecimal tax) {
         if (name == null || name.equals("")
@@ -39,6 +47,25 @@ public abstract class Product {
 
     public BigDecimal getPriceWithTax() {
         return price.multiply(taxPercent).add(price);
+    }
+
+    public Map<Integer, Integer> getDiscountDate() {
+        return discountDate;
+    }
+
+    public BigDecimal getDiscount(LocalDate actualDate) {
+
+        BigDecimal discount = BigDecimal.ONE;
+
+        for (int discountMonth : discountDate.keySet()) {
+            int discountDay = discountDate.get(discountMonth);
+            if (actualDate.getDayOfMonth() == discountDay
+                    && actualDate.getMonthValue() == discountMonth) {
+                discount = BigDecimal.ZERO;
+                break;
+            }
+        }
+        return discount;
     }
 
     @Override
