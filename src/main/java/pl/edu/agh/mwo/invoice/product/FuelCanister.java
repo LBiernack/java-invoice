@@ -1,14 +1,15 @@
 package pl.edu.agh.mwo.invoice.product;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
-public class BottleOfWine extends Product {
+public class FuelCanister extends Product {
 
     private final BigDecimal exciseTax;
 
-    public BottleOfWine(String name, BigDecimal price) {
+    public FuelCanister(String name, BigDecimal price) {
         super(name, price, new BigDecimal("0.23"));
-        this.exciseTax = exciseTaxValue;
+        this.exciseTax = exciseTaxValue.multiply(getDiscount(LocalDate.now()));
     }
 
     @Override
