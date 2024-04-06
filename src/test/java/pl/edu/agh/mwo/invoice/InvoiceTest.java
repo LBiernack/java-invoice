@@ -10,6 +10,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import pl.edu.agh.mwo.invoice.Invoice;
 import pl.edu.agh.mwo.invoice.product.*;
 
@@ -402,5 +404,81 @@ public class InvoiceTest {
         invoice.addProduct(gasoline, 5);
         invoice.addProduct(gasoline);
         Assert.assertEquals(8, (int) invoice.getProducts().get(gasoline));
+    }
+
+    @Test
+    public void testInvoiceHasPropoerSubtotalWithQuantityMoreThanOneExciseTaxNoDiscount() {
+        LocalDate noDiscountDay = LocalDate.of(2024, 04, 04);
+        try (MockedStatic<LocalDate> mockedStatic = Mockito.mockStatic(LocalDate.class)) {
+            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);;
+            // 2x kubek - price: 10
+            invoice.addProduct(new TaxFreeProduct("Kubek", new BigDecimal("5")), 2);
+            // 3x kozi serek - price: 30
+            invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("10")), 3);
+            // 1000x pinezka - price: 10
+            invoice.addProduct(new OtherProduct("Pinezka", new BigDecimal("0.01")), 1000);
+            // 10x wino - price: 10
+            invoice.addProduct(new BottleOfWine("Wino", new BigDecimal("10")), 10);
+            // 15x benzyna - price: 6
+            invoice.addProduct(new FuelCanister("Benzyna", new BigDecimal("6")), 15);
+            Assert.assertThat(new BigDecimal("240"), Matchers.comparesEqualTo(invoice.getNetTotal()));
+        }
+    }
+
+    @Test
+    public void testInvoiceHasPropoerSubtotalWithQuantityMoreThanOneExciseTaxDiscount() {
+        LocalDate noDiscountDay = LocalDate.of(2024, 03, 05);
+        try (MockedStatic<LocalDate> mockedStatic = Mockito.mockStatic(LocalDate.class)) {
+            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);;
+            // 2x kubek - price: 10
+            invoice.addProduct(new TaxFreeProduct("Kubek", new BigDecimal("5")), 2);
+            // 3x kozi serek - price: 30
+            invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("10")), 3);
+            // 1000x pinezka - price: 10
+            invoice.addProduct(new OtherProduct("Pinezka", new BigDecimal("0.01")), 1000);
+            // 10x wino - price: 10
+            invoice.addProduct(new BottleOfWine("Wino", new BigDecimal("10")), 10);
+            // 15x benzyna - price: 6
+            invoice.addProduct(new FuelCanister("Benzyna", new BigDecimal("6")), 15);
+            Assert.assertThat(new BigDecimal("240"), Matchers.comparesEqualTo(invoice.getNetTotal()));
+        }
+    }
+
+    @Test
+    public void testInvoiceHasPropoerTotalWithQuantityMoreThanOneExciseTaxNoDiscount() {
+        LocalDate noDiscountDay = LocalDate.of(2024, 03, 16);
+        try (MockedStatic<LocalDate> mockedStatic = Mockito.mockStatic(LocalDate.class)) {
+            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);;
+            // 2x kubek - price: 10
+            invoice.addProduct(new TaxFreeProduct("Kubek", new BigDecimal("5")), 2);
+            // 3x kozi serek - price: 30
+            invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("10")), 3);
+            // 1000x pinezka - price: 10
+            invoice.addProduct(new OtherProduct("Pinezka", new BigDecimal("0.01")), 1000);
+            // 10x wino - price: 10
+            invoice.addProduct(new BottleOfWine("Wino", new BigDecimal("10")), 10);
+            // 15x benzyna - price: 6
+            invoice.addProduct(new FuelCanister("Benzyna", new BigDecimal("6")), 15);
+            Assert.assertThat(new BigDecimal("427.4"), Matchers.comparesEqualTo(invoice.getGrossTotal()));
+        }
+    }
+
+    @Test
+    public void testInvoiceHasPropoerTotalWithQuantityMoreThanOneExciseTaxDiscount() {
+        LocalDate noDiscountDay = LocalDate.of(2024, 03, 05);
+        try (MockedStatic<LocalDate> mockedStatic = Mockito.mockStatic(LocalDate.class)) {
+            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);;
+            // 2x kubek - price: 10
+            invoice.addProduct(new TaxFreeProduct("Kubek", new BigDecimal("5")), 2);
+            // 3x kozi serek - price: 30
+            invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("10")), 3);
+            // 1000x pinezka - price: 10
+            invoice.addProduct(new OtherProduct("Pinezka", new BigDecimal("0.01")), 1000);
+            // 10x wino - price: 10
+            invoice.addProduct(new BottleOfWine("Wino", new BigDecimal("10")), 10);
+            // 15x benzyna - price: 6
+            invoice.addProduct(new FuelCanister("Benzyna", new BigDecimal("6")), 15);
+            Assert.assertThat(new BigDecimal("344"), Matchers.comparesEqualTo(invoice.getGrossTotal()));
+        }
     }
 }
