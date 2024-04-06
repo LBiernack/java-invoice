@@ -23,5 +23,4 @@ public class FuelCanister extends Product {
                 + getTaxPercent().multiply(new BigDecimal("100")) + "%" + ", Akcyza [PLN]: "
                 + exciseTax + ", Cena jedn. brutto [PLN]: " + getPriceWithTax();
     }
-
 }

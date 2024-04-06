@@ -11,10 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pl.edu.agh.mwo.invoice.Invoice;
-import pl.edu.agh.mwo.invoice.product.DairyProduct;
-import pl.edu.agh.mwo.invoice.product.OtherProduct;
-import pl.edu.agh.mwo.invoice.product.Product;
-import pl.edu.agh.mwo.invoice.product.TaxFreeProduct;
+import pl.edu.agh.mwo.invoice.product.*;
 
 public class InvoiceTest {
     private Invoice invoice;
@@ -137,27 +134,27 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceNumberDifferentThanZero(){
+    public void testInvoiceNumberDifferentThanZero() {
         Assert.assertNotEquals(0, invoice.getInvoiceNumber());
     }
 
     @Test
-    public void testInvoiceNumberGreaterThanZero(){
+    public void testInvoiceNumberGreaterThanZero() {
         Assert.assertTrue(invoice.getInvoiceNumber() > 0);
     }
 
     @Test
-    public void testSecondInvoiceNumberGreaterThanFirstInvoiceNumber(){
+    public void testSecondInvoiceNumberGreaterThanFirstInvoiceNumber() {
         Assert.assertTrue(invoice1.getInvoiceNumber() > invoice.getInvoiceNumber());
     }
 
     @Test
-    public  void testInvoiceCreationDate(){
+    public  void testInvoiceCreationDate() {
         Assert.assertEquals(LocalDate.now(), invoice.getCreationDate());
     }
 
     @Test
-    public void testPrintInvoiceWithOneProducts(){
+    public void testPrintInvoiceWithOneProducts() {
         System.setOut(new PrintStream(outputStreamCaptor));
 
         Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
@@ -175,7 +172,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testPrintInvoiceWithOneProductsWithQuantityMoreThanOne(){
+    public void testPrintInvoiceWithOneProductsWithQuantityMoreThanOne() {
         System.setOut(new PrintStream(outputStreamCaptor));
 
         Product milkProduct = new DairyProduct("Maslanka", new BigDecimal("100"));
@@ -193,41 +190,41 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testCompareProductsWithDifferentNamePrice(){
+    public void testCompareProductsWithDifferentNamePrice() {
         Product onions = new TaxFreeProduct("Warzywa", new BigDecimal("10"));
         Product apples = new TaxFreeProduct("Owoce", new BigDecimal("100"));
         Assert.assertFalse(invoice.compareProductObject(onions, apples));
     }
 
     @Test
-    public void testCompareProductsWithDifferentName(){
+    public void testCompareProductsWithDifferentName() {
         Product onions = new TaxFreeProduct("Warzywa", new BigDecimal("10"));
         Product apples = new TaxFreeProduct("Owoce", new BigDecimal("10"));
         Assert.assertFalse(invoice.compareProductObject(onions, apples));
     }
 
     @Test
-    public void testCompareProductsWithDifferentPrice(){
+    public void testCompareProductsWithDifferentPrice() {
         Product onions1 = new TaxFreeProduct("Owoce", new BigDecimal("10"));
         Product onions2 = new TaxFreeProduct("Owoce", new BigDecimal("11"));
         Assert.assertFalse(invoice.compareProductObject(onions1, onions2));
     }
 
     @Test
-    public void testCompareProductsWithTheSameNamePriceDifferentTax(){
+    public void testCompareProductsWithTheSameNamePriceDifferentTax() {
         Product onions = new TaxFreeProduct("Owoce", new BigDecimal("10"));
         Product exoticFruit = new DairyProduct("Owoce", new BigDecimal("10"));
         Assert.assertFalse(invoice.compareProductObject(onions, exoticFruit));
     }
 
     @Test
-    public void testCompareTheSameProducts(){
+    public void testCompareTheSameProducts() {
         Product onions = new TaxFreeProduct("Owoce", new BigDecimal("10"));
         Assert.assertTrue(invoice.compareProductObject(onions, onions));
     }
 
     @Test
-    public void testCompareProductsWithTheSameNamePriceTax(){
+    public void testCompareProductsWithTheSameNamePriceTax() {
         Product onions1 = new TaxFreeProduct("Owoce", new BigDecimal("10"));
         Product onions2 = new TaxFreeProduct("Owoce", new BigDecimal("10"));
         //Przypadek błędnego utworzenia dwóch obiektów o tych samych atrybutach
@@ -235,7 +232,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceHasProperSizeWithTwoDuplicateProducts(){
+    public void testInvoiceHasProperSizeWithTwoDuplicateProducts() {
         Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
         invoice.addProduct(fruits);
         invoice.addProduct(fruits);
@@ -243,7 +240,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceHasProperSizeWithTwoDuplicateProductsWithQuantityMoreThanOne(){
+    public void testInvoiceHasProperSizeWithTwoDuplicateProductsWithQuantityMoreThanOne() {
         Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
         invoice.addProduct(fruits);
         invoice.addProduct(fruits, 10);
@@ -251,7 +248,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceHasProperSizeWithThreeDuplicateProductsWithQuantityMoreThanOne(){
+    public void testInvoiceHasProperSizeWithThreeDuplicateProductsWithQuantityMoreThanOne() {
         Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
         invoice.addProduct(fruits);
         invoice.addProduct(fruits, 10);
@@ -260,7 +257,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceHasProperProductQuantityWithTwoDuplicateProducts(){
+    public void testInvoiceHasProperProductQuantityWithTwoDuplicateProducts() {
         Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
         invoice.addProduct(fruits);
         invoice.addProduct(fruits);
@@ -268,7 +265,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceHasProperProductQuantityWithTwoDuplicateProductsWithQuantityMoreThanOne(){
+    public void testInvoiceHasProperProductQuantityWithTwoDuplicateProductsWithQuantityMoreThanOne() {
         Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
         invoice.addProduct(fruits, 2);
         invoice.addProduct(fruits, 5);
@@ -276,7 +273,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceHasProperProductQuantityWithThreeDuplicateProductsWithQuantityMoreThanOne(){
+    public void testInvoiceHasProperProductQuantityWithThreeDuplicateProductsWithQuantityMoreThanOne() {
         Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
         invoice.addProduct(fruits, 2);
         invoice.addProduct(fruits, 5);
@@ -285,7 +282,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceHasProperSizeWithDuplicateProductsForManyProducts(){
+    public void testInvoiceHasProperSizeWithDuplicateProductsForManyProducts() {
         Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
         Product milkProduct = new DairyProduct("Maslanka", new BigDecimal("100"));
         Product alcohol = new OtherProduct("Wino", new BigDecimal("10"));
@@ -299,7 +296,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceHasProperSizeWithDuplicateProductsForManyProductsWithQuantityMoreThanOne(){
+    public void testInvoiceHasProperSizeWithDuplicateProductsForManyProductsWithQuantityMoreThanOne() {
         Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
         Product milkProduct = new DairyProduct("Maslanka", new BigDecimal("100"));
         Product alcohol = new OtherProduct("Wino", new BigDecimal("10"));
@@ -313,7 +310,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceHasProperProductQuantityWithDuplicateProductsForManyProducts(){
+    public void testInvoiceHasProperProductQuantityWithDuplicateProductsForManyProducts() {
         Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
         Product milkProduct = new DairyProduct("Maslanka", new BigDecimal("100"));
         Product alcohol = new OtherProduct("Wino", new BigDecimal("10"));
@@ -329,7 +326,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceHasProperProductQuantityWithDuplicateProductsForManyProductsWithQuantityMoreThanOne(){
+    public void testInvoiceHasProperProductQuantityWithDuplicateProductsForManyProductsWithQuantityMoreThanOne() {
         Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
         Product milkProduct = new DairyProduct("Maslanka", new BigDecimal("100"));
         Product alcohol = new OtherProduct("Wino", new BigDecimal("10"));
@@ -345,7 +342,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceHasProperSizeWithWrongCreatedDuplicateProductsForManyProductsWithQuantityMoreThanOne(){
+    public void testInvoiceHasProperSizeWithWrongCreatedDuplicateProductsForManyProductsWithQuantityMoreThanOne() {
         //Przypadek błędnego utworzenia obiektów o tych samych atrybutach
         Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
         Product fruits1 = new TaxFreeProduct("Owoce", new BigDecimal("200"));
@@ -363,7 +360,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceHasProperProductQuantityWithWrongCreatedDuplicateProductsForManyProductsWithQuantityMoreThanOne(){
+    public void testInvoiceHasProperProductQuantityWithWrongCreatedDuplicateProductsForManyProductsWithQuantityMoreThanOne() {
         //Przypadek błędnego utworzenia obiektów o tych samych atrybutach
         Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
         Product fruits1 = new TaxFreeProduct("Owoce", new BigDecimal("200"));
@@ -380,5 +377,30 @@ public class InvoiceTest {
         Assert.assertEquals(20, (int) invoice.getProducts().get(fruits));
         Assert.assertEquals(15, (int) invoice.getProducts().get(milkProduct));
         Assert.assertEquals(1, (int) invoice.getProducts().get(alcohol));
+    }
+
+    @Test
+    public void testCompareProductsWithTheSameNamePriceTaxDifferentType() {
+        Product alcohol = new BottleOfWine("Etanol", new BigDecimal("6"));
+        Product gasoline = new FuelCanister("Etanol", new BigDecimal("6"));
+        Assert.assertFalse(invoice.compareProductObject(alcohol, gasoline));
+    }
+
+    @Test
+    public void testInvoiceHasProperSizeWithThreeDuplicateExciseTaxProductsWithQuantityMoreThanOne() {
+        Product gasoline = new FuelCanister("Benzyna", new BigDecimal("6"));
+        invoice.addProduct(gasoline);
+        invoice.addProduct(gasoline, 10);
+        invoice.addProduct(gasoline, 5);
+        Assert.assertEquals(1, invoice.getProducts().size());
+    }
+
+    @Test
+    public void testInvoiceHasProperProductQuantityWithThreeDuplicateExciseTaxProductsWithQuantityMoreThanOne() {
+        Product gasoline = new FuelCanister("Benzyna", new BigDecimal("6"));
+        invoice.addProduct(gasoline, 2);
+        invoice.addProduct(gasoline, 5);
+        invoice.addProduct(gasoline);
+        Assert.assertEquals(8, (int) invoice.getProducts().get(gasoline));
     }
 }
