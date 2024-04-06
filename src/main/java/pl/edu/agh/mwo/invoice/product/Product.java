@@ -1,6 +1,9 @@
 package pl.edu.agh.mwo.invoice.product;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Product {
     private final String name;
@@ -8,6 +11,8 @@ public abstract class Product {
     private final BigDecimal price;
 
     private final BigDecimal taxPercent;
+
+    protected final BigDecimal exciseTaxValue = new BigDecimal("5.56");
 
     protected Product(String name, BigDecimal price, BigDecimal tax) {
         if (name == null || name.equals("")

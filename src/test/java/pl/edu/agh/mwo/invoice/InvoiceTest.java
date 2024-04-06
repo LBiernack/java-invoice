@@ -18,8 +18,11 @@ import pl.edu.agh.mwo.invoice.product.TaxFreeProduct;
 
 public class InvoiceTest {
     private Invoice invoice;
+
     private Invoice invoice1;
+
     private final PrintStream standardOut = System.out;
+
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
     @Before
