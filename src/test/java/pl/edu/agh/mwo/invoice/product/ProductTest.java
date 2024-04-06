@@ -134,7 +134,7 @@ public class ProductTest {
     public void testProductPriceAndTaxWithFuelCanisterProductNoDiscount() {
         LocalDate noDiscountDay = LocalDate.of(2024, 03, 06);
         try (MockedStatic<LocalDate> mockedStatic = Mockito.mockStatic(LocalDate.class)) {
-            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);;
+            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);
             Product product = new FuelCanister("Benzyna", new BigDecimal("6"));
             Assert.assertThat(new BigDecimal("6"), Matchers.comparesEqualTo(product.getPrice()));
             Assert.assertThat(new BigDecimal("0.23"), Matchers.comparesEqualTo(product.getTaxPercent()));
@@ -146,7 +146,7 @@ public class ProductTest {
     public void testProductPriceAndTaxWithFuelCanisterProductDiscount() {
         LocalDate noDiscountDay = LocalDate.of(2024, 03, 05);
         try (MockedStatic<LocalDate> mockedStatic = Mockito.mockStatic(LocalDate.class)) {
-            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);;
+            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);
             Product product = new FuelCanister("Benzyna", new BigDecimal("6"));
             Assert.assertThat(new BigDecimal("6"), Matchers.comparesEqualTo(product.getPrice()));
             Assert.assertThat(new BigDecimal("0.23"), Matchers.comparesEqualTo(product.getTaxPercent()));
@@ -158,7 +158,7 @@ public class ProductTest {
     public void testProductPriceAndTaxWithFuelCanisterProductDiscountEveryYear() {
         LocalDate noDiscountDay = LocalDate.of(2025, 03, 05);
         try (MockedStatic<LocalDate> mockedStatic = Mockito.mockStatic(LocalDate.class)) {
-            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);;
+            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);
             Product product = new FuelCanister("Benzyna", new BigDecimal("6"));
             Assert.assertThat(new BigDecimal("6"), Matchers.comparesEqualTo(product.getPrice()));
             Assert.assertThat(new BigDecimal("0.23"), Matchers.comparesEqualTo(product.getTaxPercent()));
@@ -170,7 +170,7 @@ public class ProductTest {
     public void testPrintingInformationFuelCanisterProductNoDiscount() {
         LocalDate noDiscountDay = LocalDate.of(2024, 03, 06);
         try (MockedStatic<LocalDate> mockedStatic = Mockito.mockStatic(LocalDate.class)) {
-            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);;
+            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);
             Product product = new FuelCanister("Benzyna", new BigDecimal("6"));
             String textInformation = "Nazwa: Benzyna, Cena jedn. netto [PLN]: 6, Stawka VAT: 23.00%, Akcyza [PLN]: 5.56, Cena jedn. brutto [PLN]: 12.94";
             Assert.assertEquals(textInformation, product.toString());
@@ -181,7 +181,7 @@ public class ProductTest {
     public void testPrintingInformationFuelCanisterProductDiscount() {
         LocalDate noDiscountDay = LocalDate.of(2024, 03, 05);
         try (MockedStatic<LocalDate> mockedStatic = Mockito.mockStatic(LocalDate.class)) {
-            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);;
+            mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);
             Product product = new FuelCanister("Benzyna", new BigDecimal("6"));
             String textInformation = "Nazwa: Benzyna, Cena jedn. netto [PLN]: 6, Stawka VAT: 23.00%, Akcyza [PLN]: 0.00, Cena jedn. brutto [PLN]: 7.38";
             Assert.assertEquals(textInformation, product.toString());
