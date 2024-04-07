@@ -61,14 +61,14 @@ public class ProductTest {
     @Test
     public void testPrintingInformationWithTaxFreeProduct() {
         Product product = new TaxFreeProduct("Owoce", new BigDecimal("200"));
-        String textInformation = "Nazwa: Owoce, Cena jedn. netto [PLN]: 200, Stawka VAT: 0%, Cena jedn. brutto [PLN]: 200";
+        String textInformation = "Nazwa: Owoce; Cena jedn. netto [PLN]: 200,00; Stawka VAT: 0%; Cena jedn. brutto [PLN]: 200,00";
         Assert.assertEquals(textInformation, product.toString());
     }
 
     @Test
     public void testPrintingInformationWithDairyProduct() {
         Product product = new DairyProduct("Szarlotka", new BigDecimal("100"));
-        String textInformation = "Nazwa: Szarlotka, Cena jedn. netto [PLN]: 100, Stawka VAT: 8.00%, Cena jedn. brutto [PLN]: 108.00";
+        String textInformation = "Nazwa: Szarlotka; Cena jedn. netto [PLN]: 100,00; Stawka VAT: 8%; Cena jedn. brutto [PLN]: 108,00";
         Assert.assertEquals(textInformation, product.toString());
     }
 
@@ -101,7 +101,7 @@ public class ProductTest {
     @Test
     public void testPrintingInformationWithBottleOfWineProduct() {
         Product product = new BottleOfWine("Wino", new BigDecimal("10"));
-        String textInformation = "Nazwa: Wino, Cena jedn. netto [PLN]: 10, Stawka VAT: 23.00%, Akcyza [PLN]: 5.56, Cena jedn. brutto [PLN]: 17.86";
+        String textInformation = "Nazwa: Wino; Cena jedn. netto [PLN]: 10,00; Stawka VAT: 23%; Akcyza [PLN]: 5,56; Cena jedn. brutto [PLN]: 17,86";
         Assert.assertEquals(textInformation, product.toString());
     }
 
@@ -170,7 +170,7 @@ public class ProductTest {
         try (MockedStatic<LocalDate> mockedStatic = Mockito.mockStatic(LocalDate.class)) {
             mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);
             Product product = new FuelCanister("Benzyna", new BigDecimal("6"));
-            String textInformation = "Nazwa: Benzyna, Cena jedn. netto [PLN]: 6, Stawka VAT: 23.00%, Akcyza [PLN]: 5.56, Cena jedn. brutto [PLN]: 12.94";
+            String textInformation = "Nazwa: Benzyna; Cena jedn. netto [PLN]: 6,00; Stawka VAT: 23%; Akcyza [PLN]: 5,56; Cena jedn. brutto [PLN]: 12,94";
             Assert.assertEquals(textInformation, product.toString());
         }
     }
@@ -181,7 +181,7 @@ public class ProductTest {
         try (MockedStatic<LocalDate> mockedStatic = Mockito.mockStatic(LocalDate.class)) {
             mockedStatic.when(LocalDate::now).thenReturn(noDiscountDay);
             Product product = new FuelCanister("Benzyna", new BigDecimal("6"));
-            String textInformation = "Nazwa: Benzyna, Cena jedn. netto [PLN]: 6, Stawka VAT: 23.00%, Akcyza [PLN]: 0.00, Cena jedn. brutto [PLN]: 7.38";
+            String textInformation = "Nazwa: Benzyna; Cena jedn. netto [PLN]: 6,00; Stawka VAT: 23%; Akcyza [PLN]: 0,00; Cena jedn. brutto [PLN]: 7,38";
             Assert.assertEquals(textInformation, product.toString());
         }
     }

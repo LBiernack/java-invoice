@@ -85,19 +85,19 @@ public class Invoice {
             productsSorted.put(product.getName(), product);
         }
 
-        System.out.print("Faktura nr: " + invoiceNumber + ", data wystawienia: "
+        System.out.print("Faktura nr: " + invoiceNumber + "; data wystawienia: "
                 + this.creationDate + "\n");
         for (String productName : productsSorted.keySet()) {
             Product product = productsSorted.get(productName);
-            System.out.print(product + ", Liczba: " + products.get(product)
-                    + ", Wartość brutto [PLN]: "
+            System.out.print(product + "; Liczba: " + products.get(product)
+                    + "; Wartość brutto [PLN]: "
                     + product.getPriceWithTax().multiply(new BigDecimal(products.get(product)))
                     + "\n");
         }
         System.out.print("Liczba pozycji: " + products.size() + "\n");
         System.out.print("Razem: Wartość Netto [PLN]: " + this.getNetTotal()
-                + ", Wartość VAT + Akcyza [PLN]: " + this.getTaxTotal()
-                + ", Wartość Brutto [PLN]: " + this.getGrossTotal());
+                + "; Wartość VAT + Akcyza [PLN]: " + this.getTaxTotal()
+                + "; Wartość Brutto [PLN]: " + this.getGrossTotal());
     }
 
     public boolean compareProductObject(Product product1, Product product2) {

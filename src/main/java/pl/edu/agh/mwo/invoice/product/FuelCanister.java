@@ -1,6 +1,7 @@
 package pl.edu.agh.mwo.invoice.product;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 
 public class FuelCanister extends Product {
@@ -19,8 +20,11 @@ public class FuelCanister extends Product {
 
     @Override
     public String toString() {
-        return "Nazwa: " + getName() + ", Cena jedn. netto [PLN]: " + getPrice() + ", Stawka VAT: "
-                + getTaxPercent().multiply(new BigDecimal("100")) + "%" + ", Akcyza [PLN]: "
-                + exciseTax + ", Cena jedn. brutto [PLN]: " + getPriceWithTax();
+        DecimalFormat df = new DecimalFormat("0.00##");
+        DecimalFormat df1 = new DecimalFormat("0.#");
+        return "Nazwa: " + getName() + "; Cena jedn. netto [PLN]: " + df.format(getPrice())
+                + "; Stawka VAT: " + df1.format(getTaxPercent().multiply(new BigDecimal("100")))
+                + "%" + "; Akcyza [PLN]: " + df.format(exciseTax) + "; Cena jedn. brutto [PLN]: "
+                + df.format(getPriceWithTax());
     }
 }

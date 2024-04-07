@@ -160,11 +160,11 @@ public class InvoiceTest {
 
         Product fruits = new TaxFreeProduct("Owoce", new BigDecimal("200"));
         invoice.addProduct(fruits);
-        String text = "Faktura nr: " + invoice.getInvoiceNumber() + ", data wystawienia: " + invoice.getCreationDate() + "\n"
-                + "Nazwa: Owoce, Cena jedn. netto [PLN]: 200, Stawka VAT: 0%, "
-                + "Cena jedn. brutto [PLN]: 200, Liczba: 1, Wartość brutto [PLN]: 200\n"
+        String text = "Faktura nr: " + invoice.getInvoiceNumber() + "; data wystawienia: " + invoice.getCreationDate() + "\n"
+                + "Nazwa: Owoce; Cena jedn. netto [PLN]: 200,00; Stawka VAT: 0%; "
+                + "Cena jedn. brutto [PLN]: 200,00; Liczba: 1; Wartość brutto [PLN]: 200\n"
                 + "Liczba pozycji: 1\n"
-                + "Razem: Wartość Netto [PLN]: 200, Wartość VAT + Akcyza [PLN]: 0, Wartość Brutto [PLN]: 200";
+                + "Razem: Wartość Netto [PLN]: 200; Wartość VAT + Akcyza [PLN]: 0; Wartość Brutto [PLN]: 200";
         invoice.printInvoice();
         Assert.assertEquals(text, outputStreamCaptor.toString()
                 .trim());
@@ -178,11 +178,11 @@ public class InvoiceTest {
 
         Product milkProduct = new DairyProduct("Maslanka", new BigDecimal("100"));
         invoice.addProduct(milkProduct, 10);
-        String text = "Faktura nr: " + invoice.getInvoiceNumber() + ", data wystawienia: " + invoice.getCreationDate() + "\n"
-                + "Nazwa: Maslanka, Cena jedn. netto [PLN]: 100, Stawka VAT: 8.00%, "
-                + "Cena jedn. brutto [PLN]: 108.00, Liczba: 10, Wartość brutto [PLN]: 1080.00\n"
+        String text = "Faktura nr: " + invoice.getInvoiceNumber() + "; data wystawienia: " + invoice.getCreationDate() + "\n"
+                + "Nazwa: Maslanka; Cena jedn. netto [PLN]: 100,00; Stawka VAT: 8%; "
+                + "Cena jedn. brutto [PLN]: 108,00; Liczba: 10; Wartość brutto [PLN]: 1080.00\n"
                 + "Liczba pozycji: 1\n"
-                + "Razem: Wartość Netto [PLN]: 1000, Wartość VAT + Akcyza [PLN]: 80.00, Wartość Brutto [PLN]: 1080.00";
+                + "Razem: Wartość Netto [PLN]: 1000; Wartość VAT + Akcyza [PLN]: 80.00; Wartość Brutto [PLN]: 1080.00";
         invoice.printInvoice();
         Assert.assertEquals(text, outputStreamCaptor.toString()
                 .trim());
@@ -512,14 +512,14 @@ public class InvoiceTest {
             // 15x benzyna - price: 6
             invoice2.addProduct(gasoline, 13);
             invoice2.addProduct(gasoline, 2);
-            String text = "Faktura nr: " + invoice2.getInvoiceNumber() + ", data wystawienia: " + "2024-03-16\n"
-                    + "Nazwa: Benzyna, Cena jedn. netto [PLN]: 6, Stawka VAT: 23.00%, Akcyza [PLN]: 5.56, Cena jedn. brutto [PLN]: 12.94, Liczba: 15, Wartość brutto [PLN]: 194.10\n"
-                    + "Nazwa: Kozi Serek, Cena jedn. netto [PLN]: 10, Stawka VAT: 8.00%, Cena jedn. brutto [PLN]: 10.80, Liczba: 3, Wartość brutto [PLN]: 32.40\n"
-                    + "Nazwa: Kubek, Cena jedn. netto [PLN]: 5, Stawka VAT: 0%, Cena jedn. brutto [PLN]: 5, Liczba: 2, Wartość brutto [PLN]: 10\n"
-                    + "Nazwa: Pinezka, Cena jedn. netto [PLN]: 0.01, Stawka VAT: 23.00%, Cena jedn. brutto [PLN]: 0.0123, Liczba: 1000, Wartość brutto [PLN]: 12.3000\n"
-                    + "Nazwa: Wino, Cena jedn. netto [PLN]: 10, Stawka VAT: 23.00%, Akcyza [PLN]: 5.56, Cena jedn. brutto [PLN]: 17.86, Liczba: 10, Wartość brutto [PLN]: 178.60\n"
+            String text = "Faktura nr: " + invoice2.getInvoiceNumber() + "; data wystawienia: " + "2024-03-16\n"
+                    + "Nazwa: Benzyna; Cena jedn. netto [PLN]: 6,00; Stawka VAT: 23%; Akcyza [PLN]: 5,56; Cena jedn. brutto [PLN]: 12,94; Liczba: 15; Wartość brutto [PLN]: 194.10\n"
+                    + "Nazwa: Kozi Serek; Cena jedn. netto [PLN]: 10,00; Stawka VAT: 8%; Cena jedn. brutto [PLN]: 10,80; Liczba: 3; Wartość brutto [PLN]: 32.40\n"
+                    + "Nazwa: Kubek; Cena jedn. netto [PLN]: 5,00; Stawka VAT: 0%; Cena jedn. brutto [PLN]: 5,00; Liczba: 2; Wartość brutto [PLN]: 10\n"
+                    + "Nazwa: Pinezka; Cena jedn. netto [PLN]: 0,01; Stawka VAT: 23%; Cena jedn. brutto [PLN]: 0,0123; Liczba: 1000; Wartość brutto [PLN]: 12.3000\n"
+                    + "Nazwa: Wino; Cena jedn. netto [PLN]: 10,00; Stawka VAT: 23%; Akcyza [PLN]: 5,56; Cena jedn. brutto [PLN]: 17,86; Liczba: 10; Wartość brutto [PLN]: 178.60\n"
                     + "Liczba pozycji: 5\n"
-                    + "Razem: Wartość Netto [PLN]: 240.00, Wartość VAT + Akcyza [PLN]: 187.4000, Wartość Brutto [PLN]: 427.4000";
+                    + "Razem: Wartość Netto [PLN]: 240.00; Wartość VAT + Akcyza [PLN]: 187.4000; Wartość Brutto [PLN]: 427.4000";
 
             invoice2.printInvoice();
             Assert.assertEquals(text, outputStreamCaptor.toString()
@@ -555,14 +555,14 @@ public class InvoiceTest {
             // 15x benzyna - price: 6
             invoice2.addProduct(gasoline, 13);
             invoice2.addProduct(gasoline, 2);
-            String text = "Faktura nr: " + invoice2.getInvoiceNumber() + ", data wystawienia: " + "2024-03-05\n"
-                    + "Nazwa: Benzyna, Cena jedn. netto [PLN]: 6, Stawka VAT: 23.00%, Akcyza [PLN]: 0.00, Cena jedn. brutto [PLN]: 7.38, Liczba: 15, Wartość brutto [PLN]: 110.70\n"
-                    + "Nazwa: Kozi Serek, Cena jedn. netto [PLN]: 10, Stawka VAT: 8.00%, Cena jedn. brutto [PLN]: 10.80, Liczba: 3, Wartość brutto [PLN]: 32.40\n"
-                    + "Nazwa: Kubek, Cena jedn. netto [PLN]: 5, Stawka VAT: 0%, Cena jedn. brutto [PLN]: 5, Liczba: 2, Wartość brutto [PLN]: 10\n"
-                    + "Nazwa: Pinezka, Cena jedn. netto [PLN]: 0.01, Stawka VAT: 23.00%, Cena jedn. brutto [PLN]: 0.0123, Liczba: 1000, Wartość brutto [PLN]: 12.3000\n"
-                    + "Nazwa: Wino, Cena jedn. netto [PLN]: 10, Stawka VAT: 23.00%, Akcyza [PLN]: 5.56, Cena jedn. brutto [PLN]: 17.86, Liczba: 10, Wartość brutto [PLN]: 178.60\n"
+            String text = "Faktura nr: " + invoice2.getInvoiceNumber() + "; data wystawienia: " + "2024-03-05\n"
+                    + "Nazwa: Benzyna; Cena jedn. netto [PLN]: 6,00; Stawka VAT: 23%; Akcyza [PLN]: 0,00; Cena jedn. brutto [PLN]: 7,38; Liczba: 15; Wartość brutto [PLN]: 110.70\n"
+                    + "Nazwa: Kozi Serek; Cena jedn. netto [PLN]: 10,00; Stawka VAT: 8%; Cena jedn. brutto [PLN]: 10,80; Liczba: 3; Wartość brutto [PLN]: 32.40\n"
+                    + "Nazwa: Kubek; Cena jedn. netto [PLN]: 5,00; Stawka VAT: 0%; Cena jedn. brutto [PLN]: 5,00; Liczba: 2; Wartość brutto [PLN]: 10\n"
+                    + "Nazwa: Pinezka; Cena jedn. netto [PLN]: 0,01; Stawka VAT: 23%; Cena jedn. brutto [PLN]: 0,0123; Liczba: 1000; Wartość brutto [PLN]: 12.3000\n"
+                    + "Nazwa: Wino; Cena jedn. netto [PLN]: 10,00; Stawka VAT: 23%; Akcyza [PLN]: 5,56; Cena jedn. brutto [PLN]: 17,86; Liczba: 10; Wartość brutto [PLN]: 178.60\n"
                     + "Liczba pozycji: 5\n"
-                    + "Razem: Wartość Netto [PLN]: 240.00, Wartość VAT + Akcyza [PLN]: 104.0000, Wartość Brutto [PLN]: 344.0000";
+                    + "Razem: Wartość Netto [PLN]: 240.00; Wartość VAT + Akcyza [PLN]: 104.0000; Wartość Brutto [PLN]: 344.0000";
 
             invoice2.printInvoice();
             Assert.assertEquals(text, outputStreamCaptor.toString()
