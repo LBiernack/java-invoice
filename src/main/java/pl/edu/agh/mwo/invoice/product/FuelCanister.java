@@ -2,7 +2,9 @@ package pl.edu.agh.mwo.invoice.product;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
+import java.util.Locale;
 
 public class FuelCanister extends Product {
 
@@ -20,8 +22,11 @@ public class FuelCanister extends Product {
 
     @Override
     public String toString() {
-        DecimalFormat df = new DecimalFormat("0.00##");
-        DecimalFormat df1 = new DecimalFormat("0.#");
+        Locale currentLocale = Locale.getDefault();
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(currentLocale);
+        otherSymbols.setDecimalSeparator(',');
+        DecimalFormat df = new DecimalFormat("0.00##", otherSymbols);
+        DecimalFormat df1 = new DecimalFormat("0.#", otherSymbols);
         return "Nazwa: " + getName() + "; Cena jedn. netto [PLN]: " + df.format(getPrice())
                 + "; Stawka VAT: " + df1.format(getTaxPercent().multiply(new BigDecimal("100")))
                 + "%" + "; Akcyza [PLN]: " + df.format(exciseTax) + "; Cena jedn. brutto [PLN]: "

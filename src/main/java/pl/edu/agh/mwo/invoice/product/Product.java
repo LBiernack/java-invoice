@@ -2,7 +2,9 @@ package pl.edu.agh.mwo.invoice.product;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Map;
 
 public abstract class Product {
@@ -71,8 +73,11 @@ public abstract class Product {
 
     @Override
     public String toString() {
-        DecimalFormat df = new DecimalFormat("0.00##");
-        DecimalFormat df1 = new DecimalFormat("0.#");
+        Locale currentLocale = Locale.getDefault();
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(currentLocale);
+        otherSymbols.setDecimalSeparator(',');
+        DecimalFormat df = new DecimalFormat("0.00##", otherSymbols);
+        DecimalFormat df1 = new DecimalFormat("0.#", otherSymbols);
         return "Nazwa: " + name + "; Cena jedn. netto [PLN]: " + df.format(price) + "; Stawka VAT: "
                 + df1.format(taxPercent.multiply(new BigDecimal("100"))) + "%"
                 + "; Cena jedn. brutto [PLN]: " + df.format(getPriceWithTax());
