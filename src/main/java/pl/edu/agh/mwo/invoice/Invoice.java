@@ -1,8 +1,11 @@
 package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -80,6 +83,10 @@ public class Invoice {
 
     public void printInvoice() {
         TreeMap<String, Product> productsSorted = new TreeMap<>();
+        Locale currentLocale = Locale.getDefault();
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(currentLocale);
+        otherSymbols.setDecimalSeparator(',');
+        DecimalFormat df = new DecimalFormat("0.00##", otherSymbols);
 
         for (Product product : products.keySet()) {
             productsSorted.put(product.getName(), product);
@@ -91,13 +98,14 @@ public class Invoice {
             Product product = productsSorted.get(productName);
             System.out.print(product + "; Liczba: " + products.get(product)
                     + "; Wartość brutto [PLN]: "
-                    + product.getPriceWithTax().multiply(new BigDecimal(products.get(product)))
+                    + df.format(product.getPriceWithTax()
+                    .multiply(new BigDecimal(products.get(product))))
                     + "\n");
         }
         System.out.print("Liczba pozycji: " + products.size() + "\n");
-        System.out.print("Razem: Wartość Netto [PLN]: " + this.getNetTotal()
-                + "; Wartość VAT + Akcyza [PLN]: " + this.getTaxTotal()
-                + "; Wartość Brutto [PLN]: " + this.getGrossTotal());
+        System.out.print("Razem: Wartość Netto [PLN]: " + df.format(this.getNetTotal())
+                + "; Wartość VAT + Akcyza [PLN]: " + df.format(this.getTaxTotal())
+                + "; Wartość Brutto [PLN]: " + df.format(this.getGrossTotal()));
     }
 
     public boolean compareProductObject(Product product1, Product product2) {
